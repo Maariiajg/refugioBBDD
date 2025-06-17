@@ -42,6 +42,7 @@ create table persona (
     fecha_nac date not null,
     email varchar(255) not null,
     constraint chk_email_format check (locate('@', email) > 1),
+    constraint chk_dni check (dni regexp '^[0-9]{8}[A-Z]$'),
     constraint fk_persona_direccion foreign key (id_direccion) references direccion(id)
 );
 
@@ -81,7 +82,8 @@ create table animal(
     edad int,
     estado_salud varchar(50),
     fecha_ingreso date,
-    constraint fk_animal_raza foreign key (raza) references raza(id)
+    constraint fk_animal_raza foreign key (raza) references raza(id),
+    constraint chk_edad check(edad >= 0)
 );
 
 create table cuida(
@@ -108,7 +110,8 @@ create table pago(
 	id int auto_increment primary key,
     importe decimal(6,2),
     id_adopcion int not null unique,
-    constraint fk_pago_adopcion foreign key (id_adopcion) references adopcion(id)
+    constraint fk_pago_adopcion foreign key (id_adopcion) references adopcion(id),
+	constraint chk_importe check(importe >= 0)
 );
 
 create table entrega(
